@@ -1,0 +1,21 @@
+[package]
+name = "dolar-hoy"
+description = "Obtain the current value of the dolar in Argentina"
+version = "0.1.0"
+edition = "2021"
+documentation = ""
+repository = ""
+categories = ["development-tools"]
+keywords = ["development", "currency", "dolar", "argentina"]
+license = "MIT"
+[dependencies]
+sentry = "0.36.0"
+dotenvy = "0.15.7"
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio"] }
+tokio = { version = "1.32.0", features = ["full"] }
+
+[lints.clippy]
+panic = "allow"
+missing_docs_in_private_items = "allow"
+implicit_return = "allow"
+restriction = { level = "warn", priority = -1 }

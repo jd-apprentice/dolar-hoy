@@ -1,0 +1,13 @@
+services:
+  dolar_hoy:
+    image: rust_template
+    security_opt:
+      - apparmor:./docker/non-root-apparmor.profile
+      - no-new-privileges
+    cap_drop: ["ALL"]
+    networks:
+      - dolar_hoy
+
+networks:
+  dolar_hoy:
+    driver: bridge
