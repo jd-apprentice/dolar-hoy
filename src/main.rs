@@ -1,19 +1,17 @@
 use dolar_hoy::{create_pool, load_sentry};
-use sentry::capture_message;
+use sentry::{capture_message, ClientInitGuard};
 
-#[tokio::main]
-async fn main() {
-    load_sentry();
-    let pool = create_pool();
+fn main() {
+    let _sentry_guard: ClientInitGuard = load_sentry();
 
-    match pool.await {
-        Ok(pool) => {
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(async {
+            create_pool()
+                .await
+                .unwrap_or_else(|_| panic!("Failed to connect to database"));
             capture_message("Dolar Hoy API started", sentry::Level::Info);
-            println!("Pool created: {:?}", pool);
-        }
-        Err(e) => {
-            println!("Error creating pool: {}", e);
-            panic!("Error creating pool: {}", e);
-        }
-    }
+        });
 }

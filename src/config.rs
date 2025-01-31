@@ -17,7 +17,7 @@ pub fn load_env() {
 /// # Panics
 /// Will panic if `SENTRY_DSN` is not set in the .env file
 #[inline]
-pub fn load_sentry() {
+pub fn load_sentry() -> sentry::ClientInitGuard {
     load_env();
 
     let _guard = sentry::init((
@@ -33,4 +33,6 @@ pub fn load_sentry() {
         scope.set_tag("app", "dolar_hoy");
         scope.set_tag("version", env!("CARGO_PKG_VERSION"));
     });
+
+    return _guard;
 }
